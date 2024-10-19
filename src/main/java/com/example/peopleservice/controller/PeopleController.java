@@ -5,6 +5,7 @@ import com.example.peopleservice.repository.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.peopleservice.exception.ResourceNotFoundException;
 import java.util.List;
 
 @RestController

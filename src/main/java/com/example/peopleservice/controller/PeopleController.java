@@ -22,7 +22,6 @@ public class PeopleController {
         log.info("Fetching all people");
         return peopleRepository.findAll();
     }
-
     @PostMapping
     public Person addPerson(@RequestBody Person person) {
         try {

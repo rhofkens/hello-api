@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import com.example.peopleservice.exception.ResourceNotFoundException;
 import java.util.List;
 
+/**
+ * REST controller for managing people.
+ * Provides endpoints to perform CRUD operations on Person entities.
+ */
 @RestController
 @RequestMapping("/people")
 @Slf4j
@@ -17,12 +21,21 @@ public class PeopleController {
     @Autowired
     private PeopleRepository peopleRepository;
 
-    @GetMapping
+    /**
+     * Retrieve all people from the repository.
+     * 
+     * @return a list of all people
+     */
     public List<Person> getAllPeople() {
         log.info("Fetching all people");
         return peopleRepository.findAll();
     }
-    @PostMapping
+    /**
+     * Add a new person to the repository.
+     * 
+     * @param person the person to add
+     * @return the added person
+     */
     public Person addPerson(@RequestBody Person person) {
         try {
             log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
@@ -32,7 +45,14 @@ public class PeopleController {
             throw new RuntimeException("Failed to save person: " + e.getMessage());
         }
     }
-    @PutMapping("/{id}")
+    /**
+     * Update an existing person in the repository.
+     * 
+     * @param id the ID of the person to update
+     * @param personDetails the updated person details
+     * @return the updated person
+     * @throws ResourceNotFoundException if the person is not found
+     */
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
         log.info("Updating person with id: {} to {} {}", id, personDetails.getFirstName(), personDetails.getLastName());
         return peopleRepository.findById(id).map(person -> {
@@ -44,7 +64,11 @@ public class PeopleController {
         }).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + id));
     }
 
-    @DeleteMapping("/{id}")
+    /**
+     * Delete a person from the repository.
+     * 
+     * @param id the ID of the person to delete
+     */
     public void deletePerson(@PathVariable Long id) {
         log.info("Deleting person with id: {}", id);
         peopleRepository.deleteById(id);

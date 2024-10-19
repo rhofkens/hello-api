@@ -20,6 +20,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Unit tests for the PeopleController class.
+ * Uses MockMvc to simulate HTTP requests and verify responses.
+ */
 class PeopleControllerTest {
 
     private MockMvc mockMvc;
@@ -30,12 +34,32 @@ class PeopleControllerTest {
     @InjectMocks
     private PeopleController peopleController;
 
+    /**
+     * Set up the test environment before each test.
+     * Initializes mocks and the MockMvc object.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(peopleController).build();
     }
 
+    /**
+     * Test retrieving all people.
+     * Verifies that the response status is OK and the content type is JSON.
+     */
+    /**
+     * Test adding a new person.
+     * Verifies that the response status is OK and the returned person matches the input.
+     */
+    /**
+     * Test updating an existing person.
+     * Verifies that the response status is OK and the updated person matches the input.
+     */
+    /**
+     * Test deleting a person.
+     * Verifies that the response status is OK.
+     */
     @Test
     void testGetAllPeople() throws Exception {
         when(peopleRepository.findAll()).thenReturn(Collections.singletonList(new Person()));

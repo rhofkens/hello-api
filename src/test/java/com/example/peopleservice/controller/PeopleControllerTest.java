@@ -4,6 +4,8 @@ import com.example.peopleservice.model.Person;
 import com.example.peopleservice.repository.PeopleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Unit tests for the PeopleController class.
  * Uses MockMvc to simulate HTTP requests and verify responses.
  */
+@TestMethodOrder(OrderAnnotation.class)
 class PeopleControllerTest {
 
     private MockMvc mockMvc;
@@ -49,6 +52,7 @@ class PeopleControllerTest {
      * Verifies that the response status is OK and the content type is JSON.
      */
     @Test
+    @Order(1)
     void testGetAllPeople() throws Exception {
         /**
          * Test retrieving all people.
@@ -66,6 +70,7 @@ class PeopleControllerTest {
      * Verifies that the response status is OK and the returned person matches the input.
      */
     @Test
+    @Order(2)
     void testAddPerson() throws Exception {
         Person person = new Person();
         person.setFirstName("John");
@@ -86,6 +91,7 @@ class PeopleControllerTest {
      * Verifies that the response status is OK and the updated person matches the input.
      */
     @Test
+    @Order(3)
     void testUpdatePerson() throws Exception {
         Person person = new Person();
         person.setId(1L);
@@ -108,6 +114,7 @@ class PeopleControllerTest {
      * Verifies that the response status is OK.
      */
     @Test
+    @Order(4)
     void testDeletePerson() throws Exception {
         when(peopleRepository.findById(anyLong())).thenReturn(Optional.of(new Person()));
 

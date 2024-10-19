@@ -48,20 +48,12 @@ class PeopleControllerTest {
      * Test retrieving all people.
      * Verifies that the response status is OK and the content type is JSON.
      */
-    /**
-     * Test adding a new person.
-     * Verifies that the response status is OK and the returned person matches the input.
-     */
-    /**
-     * Test updating an existing person.
-     * Verifies that the response status is OK and the updated person matches the input.
-     */
-    /**
-     * Test deleting a person.
-     * Verifies that the response status is OK.
-     */
     @Test
     void testGetAllPeople() throws Exception {
+        /**
+         * Test retrieving all people.
+         * Verifies that the response status is OK and the content type is JSON.
+         */
         when(peopleRepository.findAll()).thenReturn(Collections.singletonList(new Person()));
 
         mockMvc.perform(get("/people"))
@@ -69,6 +61,10 @@ class PeopleControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    /**
+     * Test adding a new person.
+     * Verifies that the response status is OK and the returned person matches the input.
+     */
     @Test
     void testAddPerson() throws Exception {
         Person person = new Person();
@@ -85,6 +81,10 @@ class PeopleControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Doe"));
     }
 
+    /**
+     * Test updating an existing person.
+     * Verifies that the response status is OK and the updated person matches the input.
+     */
     @Test
     void testUpdatePerson() throws Exception {
         Person person = new Person();
@@ -103,6 +103,10 @@ class PeopleControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Doe"));
     }
 
+    /**
+     * Test deleting a person.
+     * Verifies that the response status is OK.
+     */
     @Test
     void testDeletePerson() throws Exception {
         when(peopleRepository.findById(anyLong())).thenReturn(Optional.of(new Person()));

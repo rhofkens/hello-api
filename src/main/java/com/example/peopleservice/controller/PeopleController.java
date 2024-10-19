@@ -22,7 +22,11 @@ public class PeopleController {
 
     @PostMapping
     public Person addPerson(@RequestBody Person person) {
-        return peopleRepository.save(person);
+        try {
+            return peopleRepository.save(person);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save person: " + e.getMessage());
+        }
     }
     @PutMapping("/{id}")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {

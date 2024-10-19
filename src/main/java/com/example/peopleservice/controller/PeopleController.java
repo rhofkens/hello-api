@@ -23,4 +23,17 @@ public class PeopleController {
     public Person addPerson(@RequestBody Person person) {
         return peopleRepository.save(person);
     }
+    @PutMapping("/{id}")
+    public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
+        return peopleRepository.findById(id).map(person -> {
+            person.setName(personDetails.getName());
+            person.setAge(personDetails.getAge());
+            return peopleRepository.save(person);
+        }).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable Long id) {
+        peopleRepository.deleteById(id);
+    }
 }

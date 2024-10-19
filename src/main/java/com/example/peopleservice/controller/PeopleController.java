@@ -26,6 +26,7 @@ public class PeopleController {
      * 
      * @return a list of all people
      */
+    @GetMapping
     public List<Person> getAllPeople() {
         log.info("Fetching all people");
         return peopleRepository.findAll();
@@ -36,6 +37,7 @@ public class PeopleController {
      * @param person the person to add
      * @return the added person
      */
+    @PostMapping
     public Person addPerson(@RequestBody Person person) {
         try {
             log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
@@ -53,6 +55,7 @@ public class PeopleController {
      * @return the updated person
      * @throws ResourceNotFoundException if the person is not found
      */
+    @PutMapping("/{id}")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
         log.info("Updating person with id: {} to {} {}", id, personDetails.getFirstName(), personDetails.getLastName());
         return peopleRepository.findById(id).map(person -> {
@@ -69,6 +72,7 @@ public class PeopleController {
      * 
      * @param id the ID of the person to delete
      */
+    @DeleteMapping("/{id}")
     public void deletePerson(@PathVariable Long id) {
         log.info("Deleting person with id: {}", id);
         peopleRepository.deleteById(id);

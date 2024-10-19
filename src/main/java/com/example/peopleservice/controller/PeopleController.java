@@ -25,7 +25,7 @@ public class PeopleController {
     @PostMapping
     public Person addPerson(@RequestBody Person person) {
         try {
-            log.info("Adding a new person: {}", person);
+            log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
             return peopleRepository.save(person);
         } catch (Exception e) {
             log.error("Failed to save person: {}", e.getMessage());
@@ -34,7 +34,7 @@ public class PeopleController {
     }
     @PutMapping("/{id}")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
-        log.info("Updating person with id: {}", id);
+        log.info("Updating person with id: {} to {} {}", id, personDetails.getFirstName(), personDetails.getLastName());
         return peopleRepository.findById(id).map(person -> {
             person.setFirstName(personDetails.getFirstName());
             person.setLastName(personDetails.getLastName());

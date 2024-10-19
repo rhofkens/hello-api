@@ -31,7 +31,9 @@ public class PeopleController {
     @PutMapping("/{id}")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
         return peopleRepository.findById(id).map(person -> {
-            person.setName(personDetails.getName());
+            person.setFirstName(personDetails.getFirstName());
+            person.setLastName(personDetails.getLastName());
+            person.setGender(personDetails.getGender());
             person.setAge(personDetails.getAge());
             return peopleRepository.save(person);
         }).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + id));

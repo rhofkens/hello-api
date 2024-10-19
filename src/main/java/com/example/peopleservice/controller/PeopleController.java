@@ -4,6 +4,8 @@ import com.example.peopleservice.model.Person;
 import com.example.peopleservice.repository.PeopleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.peopleservice.exception.ResourceNotFoundException;
@@ -24,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/people")
 @Slf4j
+@Tag(name = "People", description = "The People API")
 public class PeopleController {
 
     @Autowired
@@ -35,6 +38,7 @@ public class PeopleController {
      * @return a list of all people
      */
     @GetMapping
+    @Operation(summary = "Retrieve all people")
     public List<Person> getAllPeople() {
         log.info("Fetching all people");
         return peopleRepository.findAll();
@@ -46,6 +50,7 @@ public class PeopleController {
      * @return the added person
      */
     @PostMapping
+    @Operation(summary = "Add a new person")
     public Person addPerson(@RequestBody Person person) {
         try {
             log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
@@ -64,6 +69,7 @@ public class PeopleController {
      * @throws ResourceNotFoundException if the person is not found
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Update an existing person")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
         log.info("Updating person with id: {} to {} {}", id, personDetails.getFirstName(), personDetails.getLastName());
         return peopleRepository.findById(id).map(person -> {
@@ -81,6 +87,7 @@ public class PeopleController {
      * @param id the ID of the person to delete
      */
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a person")
     public void deletePerson(@PathVariable Long id) {
         log.info("Deleting person with id: {}", id);
         peopleRepository.deleteById(id);

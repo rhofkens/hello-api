@@ -15,7 +15,7 @@ curl -X GET http://localhost:8080/people
 
 # Script to update an existing person
 # Replace {id} with the actual ID of the person you want to update
-curl -X PUT http://localhost:8080/people/{id} \
+curl -X PUT http://localhost:8080/people/2 \
      -H "Content-Type: application/json" \
      -d '{
            "firstName": "Jane",
@@ -26,4 +26,4 @@ curl -X PUT http://localhost:8080/people/{id} \
 
 # Script to delete an existing person
 # Replace {id} with the actual ID of the person you want to delete
-curl -X DELETE http://localhost:8080/people/{id}
+curl -X DELETE http://localhost:8080/people/2

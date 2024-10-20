@@ -1,13 +1,11 @@
 package com.example.peopleservice.controller;
 
 import com.example.peopleservice.model.Person;
-import com.example.peopleservice.repository.PeopleRepository;
 import com.example.peopleservice.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
 
 import com.example.peopleservice.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,14 +30,11 @@ import java.util.stream.Collectors;
 public class PeopleController {
 
     @Autowired
-    private PeopleRepository peopleRepository;
-
-    @Autowired
     private PersonService personService;
 
-    /** 
+    /**
      * Retrieve all people from the repository.
-     * 
+     *
      * @return a list of all people
      */
     @GetMapping
@@ -48,20 +43,16 @@ public class PeopleController {
         log.info("Fetching all people");
         return personService.getAllPeople();
     }
-    /**
-     * Add a new person to the repository.
-     * 
-     * @param person the person to add
-     * @return the added person
-     */
-    @PostMapping
-    @Operation(summary = "Add a new person")
+
     /**
      * Adds a new person with an automatically generated avatar image URL.
      *
      * @param person the person to add
      * @return the added person
      */
+    @PostMapping
+    @Operation(summary = "Add a new person")
+
     public Person addPerson(@RequestBody Person person) {
         try {
             log.info("Adding a new person: {} {}, Avatar URL: {}", person.getFirstName(), person.getLastName(), person.getAvatarImageUrl());
@@ -71,10 +62,11 @@ public class PeopleController {
             throw new RuntimeException("Failed to save person: " + e.getMessage());
         }
     }
+
     /**
      * Update an existing person in the repository.
-     * 
-     * @param id the ID of the person to update
+     *
+     * @param id            the ID of the person to update
      * @param personDetails the updated person details
      * @return the updated person
      * @throws ResourceNotFoundException if the person is not found
@@ -88,7 +80,7 @@ public class PeopleController {
 
     /**
      * Delete a person from the repository.
-     * 
+     *
      * @param id the ID of the person to delete
      */
     @DeleteMapping("/{id}")
@@ -96,7 +88,6 @@ public class PeopleController {
     public void deletePerson(@PathVariable Long id) {
         log.info("Deleting person with id: {}", id);
         personService.deletePerson(id);
-    }
     }
 
     @GetMapping("/welcome")
@@ -107,10 +98,11 @@ public class PeopleController {
             return "No people found.";
         }
         return people.stream()
-            .map(person -> {
-                String firstName = person.getFirstName() != null ? person.getFirstName() : "";
-                String lastName = person.getLastName() != null ? person.getLastName() : "";
-                return "Welcome " + firstName + " " + lastName;
-            })
-            .collect(Collectors.joining("\n"));
+                .map(person -> {
+                    String firstName = person.getFirstName() != null ? person.getFirstName() : "";
+                    String lastName = person.getLastName() != null ? person.getLastName() : "";
+                    return "Welcome " + firstName + " " + lastName;
+                })
+                .collect(Collectors.joining("\n"));
     }
+}

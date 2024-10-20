@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing people.
@@ -96,4 +97,20 @@ public class PeopleController {
         log.info("Deleting person with id: {}", id);
         personService.deletePerson(id);
     }
-}
+    }
+
+    @GetMapping("/welcome")
+    @Operation(summary = "Welcome all people")
+    public String welcomeAllPeople() {
+        List<Person> people = personService.getAllPeople();
+        if (people.isEmpty()) {
+            return "No people found.";
+        }
+        return people.stream()
+            .map(person -> {
+                String firstName = person.getFirstName() != null ? person.getFirstName() : "";
+                String lastName = person.getLastName() != null ? person.getLastName() : "";
+                return "Welcome " + firstName + " " + lastName;
+            })
+            .collect(Collectors.joining("\n"));
+    }

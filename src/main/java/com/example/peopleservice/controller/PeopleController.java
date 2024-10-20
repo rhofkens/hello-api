@@ -54,9 +54,15 @@ public class PeopleController {
      */
     @PostMapping
     @Operation(summary = "Add a new person")
+    /**
+     * Adds a new person with an automatically generated avatar image URL.
+     *
+     * @param person the person to add
+     * @return the added person
+     */
     public Person addPerson(@RequestBody Person person) {
         try {
-            log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
+            log.info("Adding a new person: {} {}, Avatar URL: {}", person.getFirstName(), person.getLastName(), person.getAvatarImageUrl());
             return personService.createPerson(person);
         } catch (Exception e) {
             log.error("Failed to save person: {}", e.getMessage());

@@ -1,7 +1,9 @@
 package com.example.peopleservice.controller;
 
 import com.example.peopleservice.model.Person;
-import com.example.peopleservice.repository.PeopleRepository;
+import com.example.peopleservice.service.PersonService;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -33,7 +35,7 @@ class PeopleControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private PeopleRepository peopleRepository;
+    private PersonService personService;
 
     @InjectMocks
     private PeopleController peopleController;
@@ -46,6 +48,10 @@ class PeopleControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(peopleController).build();
+        // Verify that the service method was called
+        verify(personService, times(1)).createPerson(any(Person.class));
+        // Verify that the service method was called
+        verify(personService, times(1)).updatePerson(anyLong(), any(Person.class));
     }
 
     /**
@@ -77,7 +83,7 @@ class PeopleControllerTest {
         person.setFirstName("John");
         person.setLastName("Doe");
 
-        when(peopleRepository.save(any(Person.class))).thenReturn(person);
+        when(personService.createPerson(any(Person.class))).thenReturn(person);
 
         mockMvc.perform(post("/people")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,8 +105,7 @@ class PeopleControllerTest {
         person.setFirstName("John");
         person.setLastName("Doe");
 
-        when(peopleRepository.findById(anyLong())).thenReturn(Optional.of(person));
-        when(peopleRepository.save(any(Person.class))).thenReturn(person);
+        when(personService.updatePerson(anyLong(), any(Person.class))).thenReturn(person);
 
         mockMvc.perform(put("/people/1")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -1,7 +1,6 @@
 package com.example.peopleservice.controller;
 
 import com.example.peopleservice.model.Person;
-import com.example.peopleservice.service.PersonService;
 import com.example.peopleservice.repository.PeopleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

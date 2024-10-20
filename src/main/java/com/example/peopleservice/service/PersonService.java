@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonService {
 
     @Autowired
-    private PeopleRepository peopleRepository;
 
     @Value("${avatar.service.baseUrl}")
     private String avatarServiceBaseUrl;

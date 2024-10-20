@@ -15,7 +15,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("https://lov-p-c493545d-d509-4fda-a781-b5999c04c1dc.fly.dev")
+            .allowedOrigins(
+                "https://lov-p-c493545d-d509-4fda-a781-b5999c04c1dc.fly.dev",
+                "https://hello-people-frontend.gptengineer.run/"
+            )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true);

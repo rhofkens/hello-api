@@ -44,6 +44,9 @@ public class PersonService {
         return peopleRepository.findById(id).map(person -> {
             person.setFirstName(personDetails.getFirstName());
             person.setLastName(personDetails.getLastName());
+            // Regenerate avatar image URL after updating name
+            String avatarImageUrl = generateAvatarImageUrl(person);
+            person.setAvatarImageUrl(avatarImageUrl);
             person.setGender(personDetails.getGender());
             person.setAge(personDetails.getAge());
             return peopleRepository.save(person);

@@ -1,7 +1,7 @@
 package com.example.peopleservice.controller;
 
 import com.example.peopleservice.model.Person;
-import com.example.peopleservice.repository.PeopleRepository;
+import com.example.peopleservice.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,10 @@ public class PeopleController {
     @Autowired
     private PeopleRepository peopleRepository;
 
-    /**
+    @Autowired
+    private PersonService personService;
+
+    /** 
      * Retrieve all people from the repository.
      * 
      * @return a list of all people
@@ -54,7 +57,7 @@ public class PeopleController {
     public Person addPerson(@RequestBody Person person) {
         try {
             log.info("Adding a new person: {} {}", person.getFirstName(), person.getLastName());
-            return peopleRepository.save(person);
+            return personService.createPerson(person);
         } catch (Exception e) {
             log.error("Failed to save person: {}", e.getMessage());
             throw new RuntimeException("Failed to save person: " + e.getMessage());

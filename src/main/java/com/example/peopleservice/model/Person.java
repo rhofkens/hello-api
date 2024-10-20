@@ -16,6 +16,8 @@ public class Person {
     private String gender;
     private int age;
 
+    private String avatarImageUrl;
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -55,5 +57,12 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public String getAvatarImageUrl() {
+        return avatarImageUrl;
+    }
+
+    public void setAvatarImageUrl(String avatarImageUrl) {
+        this.avatarImageUrl = avatarImageUrl;
     }
 }

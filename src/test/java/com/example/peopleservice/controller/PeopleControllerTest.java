@@ -2,6 +2,7 @@ package com.example.peopleservice.controller;
 
 import com.example.peopleservice.model.Person;
 import com.example.peopleservice.service.PersonService;
+import com.example.peopleservice.repository.PeopleRepository;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,6 +39,9 @@ class PeopleControllerTest {
     @Mock
     private PersonService personService;
 
+    @Mock
+    private PeopleRepository peopleRepository;
+
     @InjectMocks
     private PeopleController peopleController;
 
@@ -48,10 +53,8 @@ class PeopleControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(peopleController).build();
-        // Verify that the service method was called
-        verify(personService, times(1)).createPerson(any(Person.class));
-        // Verify that the service method was called
-        verify(personService, times(1)).updatePerson(anyLong(), any(Person.class));
+        // Verify that personService.deletePerson was called once with any Long value
+        verify(personService, times(1)).deletePerson(anyLong());
     }
 
     /**
@@ -61,11 +64,7 @@ class PeopleControllerTest {
     @Test
     @Order(1)
     void testGetAllPeople() throws Exception {
-        /**
-         * Test retrieving all people.
-         * Verifies that the response status is OK and the content type is JSON.
-         */
-        when(peopleRepository.findAll()).thenReturn(Collections.singletonList(new Person()));
+        when(personService.getAllPeople()).thenReturn(Collections.singletonList(new Person()));
 
         mockMvc.perform(get("/people"))
                 .andExpect(status().isOk())
@@ -122,7 +121,7 @@ class PeopleControllerTest {
     @Test
     @Order(4)
     void testDeletePerson() throws Exception {
-        when(peopleRepository.findById(anyLong())).thenReturn(Optional.of(new Person()));
+        doNothing().when(personService).deletePerson(anyLong());
 
         mockMvc.perform(delete("/people/1"))
                 .andExpect(status().isOk());

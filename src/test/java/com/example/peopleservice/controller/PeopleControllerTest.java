@@ -53,13 +53,87 @@ class PeopleControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(peopleController).build();
-        // Verify that personService.getAllPeople was called once
+    }
+
+    /**
+     * Test retrieving all people.
+     * Verifies that the response status is OK and the content type is JSON.
+     */
+    @Test
+    @Order(1)
+    void testGetAllPeople() throws Exception {
+        when(personService.getAllPeople()).thenReturn(Collections.singletonList(new Person()));
+
+        mockMvc.perform(get("/people"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        // Verify that personService.getAllPeople() was called once
         verify(personService, times(1)).getAllPeople();
-        // Verify that personService.createPerson was called once
+    }
+
+    /**
+     * Test adding a new person.
+     * Verifies that the response status is OK and the returned person matches the input.
+     */
+    @Test
+    @Order(2)
+    void testAddPerson() throws Exception {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+
+        when(personService.createPerson(any(Person.class))).thenReturn(person);
+
+        mockMvc.perform(post("/people")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"firstName\": \"John\", \"lastName\": \"Doe\", \"gender\": \"Male\", \"age\": 30}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.lastName").value("Doe"));
+
+        // Verify that personService.createPerson() was called once
         verify(personService, times(1)).createPerson(any(Person.class));
-        // Verify that personService.updatePerson was called once
+    }
+
+    /**
+     * Test updating an existing person.
+     * Verifies that the response status is OK and the updated person matches the input.
+     */
+    @Test
+    @Order(3)
+    void testUpdatePerson() throws Exception {
+        Person person = new Person();
+        person.setId(1L);
+        person.setFirstName("Jane");
+        person.setLastName("Doe");
+
+        when(personService.updatePerson(anyLong(), any(Person.class))).thenReturn(person);
+
+        mockMvc.perform(put("/people/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"firstName\": \"Jane\", \"lastName\": \"Doe\", \"gender\": \"Female\", \"age\": 28}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Jane"))
+                .andExpect(jsonPath("$.lastName").value("Doe"));
+
+        // Verify that personService.updatePerson() was called once
         verify(personService, times(1)).updatePerson(anyLong(), any(Person.class));
-        // Verify that personService.deletePerson was called once
+    }
+
+    /**
+     * Test deleting a person.
+     * Verifies that the response status is OK.
+     */
+    @Test
+    @Order(4)
+    void testDeletePerson() throws Exception {
+        doNothing().when(personService).deletePerson(anyLong());
+
+        mockMvc.perform(delete("/people/1"))
+                .andExpect(status().isOk());
+
+        // Verify that personService.deletePerson() was called once
         verify(personService, times(1)).deletePerson(anyLong());
     }
 

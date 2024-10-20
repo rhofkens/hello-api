@@ -53,7 +53,13 @@ class PeopleControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(peopleController).build();
-        // Verify that personService.deletePerson was called once with any Long value
+        // Verify that personService.getAllPeople was called once
+        verify(personService, times(1)).getAllPeople();
+        // Verify that personService.createPerson was called once
+        verify(personService, times(1)).createPerson(any(Person.class));
+        // Verify that personService.updatePerson was called once
+        verify(personService, times(1)).updatePerson(anyLong(), any(Person.class));
+        // Verify that personService.deletePerson was called once
         verify(personService, times(1)).deletePerson(anyLong());
     }
 

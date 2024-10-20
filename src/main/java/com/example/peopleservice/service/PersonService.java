@@ -35,12 +35,14 @@ public class PersonService {
 
     private String generateAvatarImageUrl(Person person) {
         // Implement logic to generate avatar image URL
-        try {
-            return avatarServiceBaseUrl + person.getFirstName() + "_" + person.getLastName() + ".png";
-        } catch (Exception e) {
-            log.error("Failed to generate avatar image URL for {} {}: {}", person.getFirstName(), person.getLastName(), e.getMessage());
-            return avatarServiceBaseUrl + "default.png";
+        String firstName = person.getFirstName() != null ? person.getFirstName() : "";
+        String lastName = person.getLastName() != null ? person.getLastName() : "";
+        String seed = firstName + lastName;
+        if (seed.isEmpty()) {
+            seed = "default";
         }
+        String options = "?set=set2&size=200x200";
+        return avatarServiceBaseUrl + seed + ".png" + options;
     }
     public Person updatePerson(Long id, Person personDetails) {
         return peopleRepository.findById(id).map(person -> {

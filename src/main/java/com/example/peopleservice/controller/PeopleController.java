@@ -81,13 +81,7 @@ public class PeopleController {
     @Operation(summary = "Update an existing person")
     public Person updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
         log.info("Updating person with id: {} to {} {}", id, personDetails.getFirstName(), personDetails.getLastName());
-        return peopleRepository.findById(id).map(person -> {
-            person.setFirstName(personDetails.getFirstName());
-            person.setLastName(personDetails.getLastName());
-            person.setGender(personDetails.getGender());
-            person.setAge(personDetails.getAge());
-            return peopleRepository.save(person);
-        }).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + id));
+        return personService.updatePerson(id, personDetails);
     }
 
     /**

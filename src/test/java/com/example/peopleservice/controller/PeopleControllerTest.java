@@ -23,6 +23,8 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import java.util.Arrays;
+import java.util.List;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,6 +46,60 @@ class PeopleControllerTest {
 
     @InjectMocks
     private PeopleController peopleController;
+    /**
+     * Test welcoming all people.
+     * Verifies that the response status is OK and the welcome message is correct.
+     */
+    @Test
+    @Order(5)
+    void testWelcomeAllPeople() throws Exception {
+        // Prepare test data
+        Person person1 = new Person();
+        person1.setFirstName("John");
+        person1.setLastName("Doe");
+
+        Person person2 = new Person();
+        person2.setFirstName("Jane");
+        person2.setLastName("Smith");
+
+        List<Person> people = Arrays.asList(person1, person2);
+
+        // Mock the personService to return the test data
+        when(personService.getAllPeople()).thenReturn(people);
+
+        // Expected concatenated welcome message
+        String expectedMessage = "Welcome John Doe\nWelcome Jane Smith";
+
+        // Perform GET request to /people/welcome
+        mockMvc.perform(get("/people/welcome"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedMessage));
+
+        // Verify that personService.getAllPeople() was called once
+        verify(personService, times(1)).getAllPeople();
+    }
+
+    /**
+     * Test welcoming all people when no people are found.
+     * Verifies that the response status is OK and the message is "No people found."
+     */
+    @Test
+    @Order(6)
+    void testWelcomeAllPeople_NoPeopleFound() throws Exception {
+        // Mock the personService to return an empty list
+        when(personService.getAllPeople()).thenReturn(Collections.emptyList());
+
+        // Expected message when no people are found
+        String expectedMessage = "No people found.";
+
+        // Perform GET request to /people/welcome
+        mockMvc.perform(get("/people/welcome"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedMessage));
+
+        // Verify that personService.getAllPeople() was called once
+        verify(personService, times(1)).getAllPeople();
+    }
 
     /**
      * Set up the test environment before each test.

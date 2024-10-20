@@ -45,7 +45,7 @@ public class PeopleController {
     @Operation(summary = "Retrieve all people")
     public List<Person> getAllPeople() {
         log.info("Fetching all people");
-        return peopleRepository.findAll();
+        return personService.getAllPeople();
     }
     /**
      * Add a new person to the repository.
@@ -94,6 +94,6 @@ public class PeopleController {
     @Operation(summary = "Delete a person")
     public void deletePerson(@PathVariable Long id) {
         log.info("Deleting person with id: {}", id);
-        peopleRepository.deleteById(id);
+        personService.deletePerson(id);
     }
 }

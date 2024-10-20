@@ -3,6 +3,8 @@ package com.example.peopleservice.service;
 import com.example.peopleservice.model.Person;
 import com.example.peopleservice.repository.PeopleRepository;
 import com.example.peopleservice.exception.ResourceNotFoundException;
+import java.util.List;
+import com.example.peopleservice.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,5 +53,15 @@ public class PersonService {
             person.setAge(personDetails.getAge());
             return peopleRepository.save(person);
         }).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + id));
+    }
+    public List<Person> getAllPeople() {
+        return peopleRepository.findAll();
+    }
+
+    public void deletePerson(Long id) {
+        if (!peopleRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Person not found with id " + id);
+        }
+        peopleRepository.deleteById(id);
     }
 }
